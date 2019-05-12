@@ -99,7 +99,7 @@ public class ReportJob extends JobContext {
 
         String sql = "select '0/10 * * * * ?' as 'cron-key', a.* from `t_scheduler_report` a limit 1;";
 
-        sql = "select id, title, receive_list, '0/10 * * * * ?' as 'cron-key', strategy, attachment, str_sql, heads from t_scheduler_report where class_name = ? limit 1";
+        sql = "select id, title, receive_list, '0/10 * * * * ?' as 'cron-key', strategy, attachment, str_sql, heads from t_scheduler_report_trigger where class_name = ? limit 1";
 
 
         List<Map<String,Object>> jobParamList = jdbcTemplate.queryForList(sql,this.getClass().getName());
@@ -109,7 +109,7 @@ public class ReportJob extends JobContext {
 
     @Override
     public Map<String, Object> queryJobParam(String unique) {
-        String uniqueSql = "select id, title, receive_list, '0/10 * * * * ?' as 'cron-key', strategy, attachment, str_sql, heads from t_scheduler_report where class_name = ? and id = ?";
+        String uniqueSql = "select id, title, receive_list, '0/10 * * * * ?' as 'cron-key', strategy, attachment, str_sql, heads from t_scheduler_report_trigger where class_name = ? and id = ?";
         Map<String,Object> paramMap = jdbcTemplate.queryForMap(uniqueSql,this.getClass().getName(),unique);
         return paramMap;
     }

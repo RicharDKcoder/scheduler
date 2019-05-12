@@ -31,7 +31,7 @@ public class InitScheduler {
     private Scheduler scheduler;
     @Autowired
     private ListenerManager listenerManager;
-    @Value("${scheduler.core.cron-key:cron}")
+    @Value("${scheduler.core.component.init.init-scheduler.cron-key:cron}")
     private String cronKey;
 
 

@@ -15,15 +15,19 @@ import java.util.Map;
 @Slf4j
 @SchedulerJob
 public class JobScan extends JobContext {
-    @Value("${scheduler.core.cron-key:cron}")
+    @Value("${scheduler.core.component.init.init-scheduler.cron-key:cron}")
     private String cronKey;
-    @Value("${scheduler.core.daemon.job-scan.cron:0/10 * * * * ?}")
+    @Value("${scheduler.core.component.daemon.job-scan.cron:0/10 * * * * ?}")
     private String cron;
+
+
+    public JobScan() {
+        this.setDescription("Job Scan 扫描任务");
+    }
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         log.info("this is jobScan cronKey:{}, cron:{}",cronKey,cron);
-
     }
 
 
