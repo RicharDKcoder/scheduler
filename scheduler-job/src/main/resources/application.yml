@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:mysql://10.172.216.113/db_mall
+    username: mall
+    password: cm1ZwY0MrMZSoUvcowr5
+    driver-class-name: com.mysql.jdbc.Driver
+
+
+scheduler:
+  core:
+    cron-key: cron-key
+    daemon:
+      job-scan:
+        cron: "* * * * * ?"
+
+  job:
+    task:
+      report-job:
+        path: "/Users/docryze/temp/"
