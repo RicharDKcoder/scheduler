@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/monitor")
+@RequestMapping("/core/monitor")
 public class MonitorController {
     @Autowired
     private JobMonitor jobMonitor;

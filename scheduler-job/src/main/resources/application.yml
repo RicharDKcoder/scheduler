@@ -1,23 +1,24 @@
 spring:
   datasource:
-#    url: jdbc:mysql://10.172.216.113/db_mall
-#    username: mall
-#    password: cm1ZwY0MrMZSoUvcowr5
     url: jdbc:mysql://localhost/db_scheduler?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: root
-    driver-class-name: com.mysql.jdbc.Driver
-
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://10.172.216.113/db_mall
+#    username: mall
+#    password: cm1ZwY0MrMZSoUvcowr5
 scheduler:
   core:
+    config:
+      scheduler-config:
+        maxThreads: 20
     component:
       init:
         init-scheduler:
           cron-key: cron-key
       daemon:
         job-scan:
-          cron: "* * * * * ?"
-
+          cron: "0/10 * * * * ?"
   job:
     task:
       report-job:

@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.aop.support.AopUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ public abstract class JobContext implements Job {
 
 
     public String getName() {
-        return this.getClass().getName();
+        return AopUtils.getTargetClass(this).getName();
     }
 
     public void jobToBeExecuted(JobExecutionContext context) {

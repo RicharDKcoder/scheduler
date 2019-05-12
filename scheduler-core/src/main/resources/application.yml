@@ -1,0 +1,5 @@
+scheduler:
+  core:
+    config:
+      scheduler-config:
+        maxThreads: 20

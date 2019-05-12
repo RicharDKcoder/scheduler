@@ -7,6 +7,7 @@ import com.docryze.scheduler.core.exception.SchedulerCoreException;
 import com.docryze.scheduler.core.exception.SchedulerCoreException.ExceptionCode;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.*;
+import org.springframework.aop.support.AopUtils;
 
 import java.util.*;
 
@@ -29,7 +30,7 @@ public class SchedulerUtil {
      * @throws SchedulerCoreException
      */
     public static JobConfig schedulerJob(Scheduler scheduler, JobContext jobContext, String cron, Map<String,Object> paramsMap) throws SchedulerException, SchedulerCoreException {
-        Class<? extends JobContext> jobClass = jobContext.getClass();
+        Class jobClass = AopUtils.getTargetClass(jobContext);
         if(jobClass == null) throw new SchedulerCoreException(ExceptionCode.PARAMS_CLASS_ERROR);
         if(cron == null) throw new SchedulerCoreException(ExceptionCode.PARAMS_CRON_ERROR);
 
@@ -70,7 +71,7 @@ public class SchedulerUtil {
      * @throws SchedulerException
      */
     public static void unscheduleJob(Scheduler scheduler, JobContext jobContext) throws SchedulerException {
-        Class<? extends JobContext> jobClass = jobContext.getClass();
+        Class jobClass = AopUtils.getTargetClass(jobContext);
         String jobClassName = jobClass.getName();
         String triggerName = generateTriggerName(jobClassName);
         String groupName = generateGroupName(jobClassName);
@@ -88,7 +89,7 @@ public class SchedulerUtil {
      * @throws SchedulerException
      */
     public static void rescheduleJob(Scheduler scheduler, JobContext jobContext, String cron,Map<String,Object> paramsMap) throws SchedulerException {
-        Class<? extends JobContext> jobClass = jobContext.getClass();
+        Class jobClass = AopUtils.getTargetClass(jobContext);
         String jobClassName = jobClass.getName();
         String triggerName = generateTriggerName(jobClassName);
         String groupName = generateGroupName(jobClassName);
@@ -111,18 +112,18 @@ public class SchedulerUtil {
      * @throws SchedulerException
      */
     public static void executeNow(Scheduler scheduler,JobContext jobContext,Map<String,Object> paramsMap) throws SchedulerException {
-        Class<? extends JobContext> jobClass = jobContext.getClass();
+        Class jobClass = AopUtils.getTargetClass(jobContext);
         String jobClassName = jobClass.getName();
         JobKey jobKey = new JobKey(generateJobName(jobClassName),generateGroupName(jobClassName));
         scheduler.triggerJob(jobKey,new JobDataMap(paramsMap));
     }
 
 
-    public static List<JobDetail> listJobDetails(Scheduler scheduler, String groupName) throws SchedulerException {
+    public static List<JobDetail> listJobDetails(Scheduler scheduler, String jobClassName) throws SchedulerException {
         List<JobDetail> jobList = new ArrayList<>();
 
-        if(StringUtils.isNoneBlank(groupName)){
-            Set<JobKey> jobKeySet = scheduler.getJobKeys(groupEquals(groupName));
+        if(StringUtils.isNoneBlank(jobClassName)){
+            Set<JobKey> jobKeySet = scheduler.getJobKeys(groupEquals(generateGroupName(jobClassName)));
             for(JobKey jobKey : jobKeySet){
                 jobList.add(scheduler.getJobDetail(jobKey));
             }
@@ -139,12 +140,12 @@ public class SchedulerUtil {
     }
 
 
-    public static List<Trigger> listTriggerDetails(Scheduler scheduler, String groupName) throws SchedulerException {
+    public static List<Trigger> listTriggerDetails(Scheduler scheduler, String jobClassName) throws SchedulerException {
         List<Trigger> triggerList = new ArrayList<>();
 
 
-        if(StringUtils.isNoneBlank(groupName)){
-            Set<TriggerKey> triggerKeySet = scheduler.getTriggerKeys(groupEquals(groupName));
+        if(StringUtils.isNoneBlank(jobClassName)){
+            Set<TriggerKey> triggerKeySet = scheduler.getTriggerKeys(groupEquals(generateGroupName(jobClassName)));
             for(TriggerKey triggerKey : triggerKeySet){
                 triggerList.add(scheduler.getTrigger(triggerKey));
             }
@@ -160,9 +161,9 @@ public class SchedulerUtil {
     }
 
 
-    public static List<JobStatus> listJobStatus(Scheduler scheduler, String groupName) throws SchedulerException {
-        if(StringUtils.isNoneBlank(groupName)){
-            Set<TriggerKey> triggerKeySet = scheduler.getTriggerKeys(groupEquals(groupName));
+    public static List<JobStatus> listJobStatus(Scheduler scheduler, String jobClassName) throws SchedulerException {
+        if(StringUtils.isNoneBlank(jobClassName)){
+            Set<TriggerKey> triggerKeySet = scheduler.getTriggerKeys(groupEquals(generateGroupName(jobClassName)));
             return queryTrggerJobStatus(scheduler, triggerKeySet);
 
         }

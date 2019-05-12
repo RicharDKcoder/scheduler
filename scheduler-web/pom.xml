@@ -13,9 +13,16 @@
 
 
     <dependencies>
+        <!--模块依赖-->
         <dependency>
             <groupId>com.docryze</groupId>
             <artifactId>scheduler-job</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

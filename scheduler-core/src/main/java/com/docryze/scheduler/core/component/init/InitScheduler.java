@@ -46,7 +46,7 @@ public class InitScheduler {
                 //根据参数的不同 创建不同的任务
                 String cron = (String) jobParamMap.get(cronKey);
                 JobConfig jobConfig = SchedulerUtil.schedulerJob(scheduler,jobContext,cron,jobParamMap);
-                log.info("scheduler the job succeed！ jobContext:{}, cron:{}, jobParamMap:{}",jobContext,cron,jobParamMap);
+                log.info("scheduler the job succeed！ jobConfig:{}, cron:{}, jobParamMap:{}",jobConfig,cron,jobParamMap);
 
                 if(!hasListener){
                     String jobName = jobConfig.getJobName();

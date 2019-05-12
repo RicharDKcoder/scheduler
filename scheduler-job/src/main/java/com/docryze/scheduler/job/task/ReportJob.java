@@ -80,7 +80,7 @@ public class ReportJob extends JobContext {
             Date nextDate = CronUtil.nextPointTime(cron);
             String nextDateStr = nextDate.toString();
             String updateNextPointSql = "update t_scheduler_report set next_point = ? where id = ?";
-            jdbcTemplate.update(updateNextPointSql,new String[]{nextDateStr,id});
+            jdbcTemplate.update(updateNextPointSql,nextDateStr,id);
         } catch (ParseException e) {
             //todo 日志记录
             throw new JobExecutionException(e);

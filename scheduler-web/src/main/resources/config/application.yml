@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: scheduler-web
+
+com:
+  docryze:
+    scheduler:
+      core:
+        config:
+          scheduler-config:
+            maxThreads: 20
