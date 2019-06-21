@@ -46,14 +46,14 @@ public class MonitorController {
     }
 
 
-    @GetMapping("/executeNow/{className}/{id}")
-    public void executeNow(@PathVariable String className, @PathVariable String id){
-        try {
-            jobMonitor.executeNow(className,id);
-        } catch (SchedulerException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+//    @GetMapping("/executeNow/{className}/{id}")
+//    public void executeNow(@PathVariable String className, @PathVariable String id){
+//        try {
+//            jobMonitor.executeNow(className,id);
+//        } catch (SchedulerException e) {
+//            e.printStackTrace();
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

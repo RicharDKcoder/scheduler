@@ -8,19 +8,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
 public class JobMonitor {
     @Autowired
     private Scheduler scheduler;
-    @Autowired
-    private ApplicationContext applicationContext;
 
     /**
      * 所有 JobContext
@@ -54,26 +50,6 @@ public class JobMonitor {
      */
     public List<JobStatus> listJobStatus(String jobClassName) throws SchedulerException {
         return SchedulerUtil.listJobStatus(scheduler, jobClassName);
-    }
-
-
-    /**
-     * 立即执行任务
-     * @param jobClassName
-     * @param unique
-     * @throws SchedulerException
-     * @throws ClassNotFoundException
-     */
-    public void executeNow(String jobClassName,String unique) throws SchedulerException, ClassNotFoundException {
-
-        Object obj = applicationContext.getBean(Class.forName(jobClassName));
-
-        if(obj instanceof JobContext){
-            JobContext jobContext = (JobContext)obj;
-            Map<String,Object> paramsMap = jobContext.queryJobParam(unique);
-            SchedulerUtil.executeNow(scheduler,jobContext,paramsMap);
-        }
-
     }
 
 }
